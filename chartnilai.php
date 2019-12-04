@@ -122,6 +122,9 @@ $datasalah = json_encode($datachartsalah);
       			return Math.round(Math.random() * 100);
       		};
 
+
+          var databenar = JSON.parse('<?=$databenar?>');
+          var datasalah = JSON.parse('<?=$datasalah?>');
           var label = [];
           var val_benar = [];
           var val_salah = [];

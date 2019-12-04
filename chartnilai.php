@@ -118,9 +118,6 @@ $datasalah = json_encode($datachartsalah);
         <script>
       		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-      		var randomScalingFactor = function() {
-      			return Math.round(Math.random() * 100);
-      		};
 
 
           var databenar = JSON.parse('<?=$databenar?>');
@@ -184,7 +181,7 @@ $datasalah = json_encode($datachartsalah);
       						},
       						ticks: {
       							min: 0,
-      							max: 100,
+
 
       							// forces step size to be 5 units
       							stepSize: 5

@@ -1,4 +1,4 @@
-  
+
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -47,6 +47,24 @@ include "koneksi.php";
         header("Location: menusoal.php?kelas=".$insert_kelas."&tematik=".$tematik."");
       }
   }
+
+  if(isset($_POST['simpansoalupdate'])){
+      $insert_pertanyaan = $_POST['pertanyaan'];
+      $id_soal = $_POST['id_soal'];
+      $insert_kelas = $_POST['kelas'];
+      $tematik = $_POST['tematik'];
+      $insert_a = $_POST['a'];
+      $insert_b = $_POST['b'];
+      $insert_c = $_POST['c'];
+      $insert_d = $_POST['d'];
+      $insert_jawaban = $_POST['jawaban'];
+      $upload_soal = mysqli_query($koneksi,"UPDATE tb_soalkelas SET kelas='$insert_kelas',tematik='$tematik',pertanyaan='$insert_pertanyaan',a='$insert_a',b='$insert_b',c='$insert_c',d='$insert_d',jawaban='$insert_jawaban' WHERE id_soal = '$id_soal'");
+      if($upload_soal){
+        header("Location: menusoal.php?kelas=".$insert_kelas."&tematik=".$tematik."");
+      }
+  }
+
+
 ?>
 <body>
     <div id="wrapper">
@@ -217,8 +235,88 @@ include "koneksi.php";
                                         <td><?=$d_k['c']?></td>
                                         <td><?=$d_k['d']?></td>
                                         <td><?=$d_k['jawaban']?></td>
-                                        <td><a href="menusoal.php?kelas=<?=$kelas?>&tematik=<?=$tematik?>&id_soal=<?=$d_k['id_soal']?>"><button type="button" class="btn btn-danger" >Hapus</button></a></td>
+                                        <td>
+                                          <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editmodal_<?=$d_k['id_soal']?>">Edit</button>
+                                          <a href="menusoal.php?kelas=<?=$kelas?>&tematik=<?=$tematik?>&id_soal=<?=$d_k['id_soal']?>"><button type="button" class="btn btn-danger" >Hapus</button></a></td>
                                       </tr>
+                                      <div id="editmodal_<?=$d_k['id_soal']?>" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+
+                                          <!-- Modal content-->
+                                          <div class="modal-content">
+                                            <form method="POST" action="menusoal.php" enctype="multipart/form-data">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                              <h4 class="modal-title">Form Soal Kelas <?=$kelas?></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                  <div class="form-group">
+                                                      <label>Pertanyaan?</label>
+                                                      <textarea type="text" name="pertanyaan" class="form-control" placeholder="Masukan Pertanyaan Soal" required><?=$d_k['pertanyaan']?></textarea>
+                                                  </div>
+                                                  <input type="hidden" name="kelas" value="<?=$kelas?>">
+                                                  <input type="hidden" name="id_soal" value="<?=$d_k['id_soal']?>">
+                                                  <input type="hidden" name="tematik" value="<?=$tematik?>">
+                                                  <div class="form-group">
+                                                      <label>Jawaban A</label>
+                                                      <input type="text" name="a" class="form-control" value="<?=$d_k['a']?>" placeholder="Masukan Jawaban A" required>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label>Jawaban B</label>
+                                                      <input type="text" name="b" class="form-control" value="<?=$d_k['b']?>" placeholder="Masukan Jawaban B" required>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label>Jawaban C</label>
+                                                      <input type="text" name="c" class="form-control" value="<?=$d_k['c']?>" placeholder="Masukan Jawaban C" required>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label>Jawaban D</label>
+                                                      <input type="text" name="d" class="form-control" value="<?=$d_k['d']?>" placeholder="Masukan Jawaban D" required>
+                                                  </div>
+                                                  <div class="form-group">
+                                                      <label>Jawaban Yang Benar</label>
+                                                      <select name="jawaban" id="jawaban_<?=$d_k['id_soal']?>" class="form-control" required>
+                                                        <?php
+                                                        if($d_k['jawaban'] == 'a'){?>
+                                                          <option value="a" selected>A</option>
+                                                        <?php
+                                                        }else{?>
+                                                          <option value="a">A</option>
+                                                        <?php }
+                                                        if($d_k['jawaban'] == 'b'){?>
+                                                          <option value="b" selected>B</option>
+                                                        <?php
+                                                        }else{?>
+                                                          <option value="b">B</option>
+                                                        <?php }
+                                                        if($d_k['jawaban'] == 'c'){?>
+                                                          <option value="c" selected>C</option>
+                                                        <?php
+                                                        }else{?>
+                                                          <option value="c">C</option>
+                                                        <?php }
+                                                        if($d_k['jawaban'] == 'd'){?>
+                                                          <option value="d" selected>D</option>
+                                                        <?php
+                                                        }else{?>
+                                                          <option value="d">D</option>
+                                                        <?php }
+                                                        ?>
+
+
+
+                                                      </select>
+                                                  </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="submit" name="simpansoalupdate" value="Upload" class="btn btn-default">Submit </button>
+                                            </div>
+                                          </form>
+                                          </div>
+
+                                        </div>
+                                      </div>
                                       <?php
                                       }
                                      ?>
@@ -239,6 +337,7 @@ include "koneksi.php";
                         <script src="assets/js/jquery.metisMenu.js"></script>
                         <!-- Custom Js -->
                         <script src="assets/js/custom-scripts.js"></script>
+
 
 </body>
 
